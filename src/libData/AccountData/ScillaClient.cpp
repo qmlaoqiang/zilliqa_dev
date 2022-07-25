@@ -137,15 +137,10 @@ bool ScillaClient::CheckClient(uint32_t version, bool enforce) {
           SCILLA_SERVER_SOCKET_PATH +
           (ENABLE_SCILLA_MULTI_VERSION ? ("." + std::to_string(version)) : ""));
 
-  // m_connectors[version] = conn;
-
-  std::shared_ptr<jsonrpc::HttpClient> http_conn =
-      std::make_shared<jsonrpc::HttpClient>("http://localhost:8080");
-
-  m_http_connectors[version] = http_conn
+  m_connectors[version] = conn;
 
   std::shared_ptr<jsonrpc::Client> c = std::make_shared<jsonrpc::Client>(
-      *m_http_connectors.at(version), jsonrpc::JSONRPC_CLIENT_V2);
+      *m_connectors.at(version), jsonrpc::JSONRPC_CLIENT_V2);
   m_clients[version] = c;
 
   return true;
